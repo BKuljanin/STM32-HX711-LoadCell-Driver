@@ -2,6 +2,6 @@
 
 int main(void) {
 
-	loadcell_type loadcell;
+	loadcell_type my_loadcell;
 
 }
