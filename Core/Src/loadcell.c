@@ -45,8 +45,8 @@ uint8_t read_byte_shifting(loadcell_type *loadcell) {
     // Reading the byte starting with MSB and shifting left on every bit reading
 
     for(i = 0; i < 8; ++i) {
-    	HAL_GPIO_WritePin(loadcell->sck_gpio, hx711->sck_pin, SET);
-        value |= HAL_GPIO_ReadPin(loadcell->dt_gpio, loadcell->dat_pin) << (7 - i);
+    	HAL_GPIO_WritePin(loadcell->sck_gpio, loadcell->sck_pin, SET);
+        value |= HAL_GPIO_ReadPin(loadcell->dt_gpio, loadcell->dt_pin) << (7 - i);
         HAL_GPIO_WritePin(loadcell->sck_gpio, loadcell->sck_pin, RESET);
     }
     return value;
@@ -63,7 +63,7 @@ bool sensor_ready(loadcell_type *loadcell) {
 void wait_sensor_ready(loadcell_type *loadcell) {
 	// Wait for the measurement to become ready
 	while (!sensor_ready(loadcell)) { // Keeps checking if the sensor is ready
-		HAL_Delay(0);
+		//HAL_Delay(0);
 	}
 }
 
