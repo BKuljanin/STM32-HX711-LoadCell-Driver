@@ -46,8 +46,10 @@ uint8_t read_byte_shifting(loadcell_type *loadcell) {
 
     for(i = 0; i < 8; ++i) {
     	HAL_GPIO_WritePin(loadcell->sck_gpio, loadcell->sck_pin, SET);
+    	delay_us(1);
         value |= HAL_GPIO_ReadPin(loadcell->dt_gpio, loadcell->dt_pin) << (7 - i);
         HAL_GPIO_WritePin(loadcell->sck_gpio, loadcell->sck_pin, RESET);
+        delay_us(1);
     }
     return value;
 }
@@ -132,4 +134,13 @@ float get_weight(loadcell_type *loadcell, int8_t times) {
   // Read load cell measurement
 	read_data(loadcell);
 	return get_average_value(loadcell, times) / loadcell->A_scale;
+}
+
+void delay_us(uint32_t count) {
+    // Each count is roughly 3-5 CPU cycles.
+    // For a 100MHz+ STM32F4, 20-50 iterations is about 1 microsecond.
+    volatile uint32_t i;
+    for (i = 0; i < (count * 10); i++) {
+        __NOP();
+    }
 }

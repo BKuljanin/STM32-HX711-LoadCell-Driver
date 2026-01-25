@@ -24,7 +24,7 @@ void init_weight(loadcell_type *loadcell){
 	loadcell_init(loadcell, GPIOA, GPIO_PIN_3, GPIOA, GPIO_PIN_2);
 
 	/* Configure gain for each channel (see datasheet for details) */
-	set_parameters(loadcell, 1.0f, 128, 0); //scale, gain, offset
+	set_parameters(loadcell, 1.0f, 64, 0); //scale, gain, offset
 
 	/* Tare weight */
 	tare(loadcell, 10);
