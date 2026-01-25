@@ -17,4 +17,9 @@ typedef struct
 
 }loadcell_type;
 
+void set_parameters(loadcell_type *loadcell, float A_scale, uint8_t A_gain, long A_offset);
+long read_data(loadcell_type *loadcell);
+void tare(loadcell_type *loadcell, uint8_t times);
+float get_weight(loadcell_type *loadcell, int8_t times);
+
 #endif /* INC_LOADCELL_H_ */
