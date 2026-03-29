@@ -35,6 +35,9 @@ void set_parameters(loadcell_type *loadcell, float A_scale, uint8_t A_gain, long
 	else if (A_gain == 64){
 		loadcell->A_gain = 3;
 	}
+	else {
+		loadcell->A_gain = 1; // Default to 128x if invalid
+	}
 
 	loadcell->A_offset = A_offset; // Setting offset
 }
@@ -106,33 +109,27 @@ long read_data(loadcell_type *loadcell){
 	return (long)(value);
 }
 
-long read_average(loadcell_type *loadcell, int8_t times) {
+long read_average(loadcell_type *loadcell, uint8_t times) {
 
 	// Takes the average reading of n times
 
 	long sum = 0;
-	for (int8_t i = 0; i < times; i++) {
+	for (uint8_t i = 0; i < times; i++) {
 		sum += read_data(loadcell);
-		HAL_Delay(0);
 	}
 	return sum / times;
 }
 
-double get_average_value(loadcell_type *loadcell, int8_t times) {
-	long offset = 0;
-	offset = loadcell->A_offset;
-	return read_average(loadcell, times) - offset;
+long get_average_value(loadcell_type *loadcell, uint8_t times) {
+	return read_average(loadcell, times) - loadcell->A_offset;
 }
 
 void tare(loadcell_type *loadcell, uint8_t times) {
-	read_data(loadcell);
-	double sum = read_average(loadcell, times);
-	loadcell->A_offset = sum;
+	read_data(loadcell); // Flush stale reading
+	loadcell->A_offset = read_average(loadcell, times);
 }
 
-float get_weight(loadcell_type *loadcell, int8_t times) {
-  // Read load cell measurement
-	read_data(loadcell);
+float get_weight(loadcell_type *loadcell, uint8_t times) {
 	return get_average_value(loadcell, times) / loadcell->A_scale;
 }
 

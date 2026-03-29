@@ -3,11 +3,13 @@
 
 loadcell_type my_loadcell;
 void init_weight(loadcell_type *loadcell);
-long weight = 0;
+float weight = 0;
 
 int main(void) {
 
-init_weight(&my_loadcell);
+	HAL_Init();
+
+	init_weight(&my_loadcell);
 
 	while(1){
 

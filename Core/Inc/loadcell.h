@@ -20,7 +20,8 @@ typedef struct
 void set_parameters(loadcell_type *loadcell, float A_scale, uint8_t A_gain, long A_offset);
 long read_data(loadcell_type *loadcell);
 void tare(loadcell_type *loadcell, uint8_t times);
-float get_weight(loadcell_type *loadcell, int8_t times);
+float get_weight(loadcell_type *loadcell, uint8_t times);
 void loadcell_init(loadcell_type *loadcell, GPIO_TypeDef *sck_gpio, uint16_t sck_pin, GPIO_TypeDef *dt_gpio, uint16_t dt_pin);
+void delay_us(uint32_t count);
 
 #endif /* INC_LOADCELL_H_ */
